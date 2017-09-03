@@ -21,6 +21,11 @@ export default class Post extends Component {
         this.setState({
           value: snapshot.val()
         });
+        if (snapshot.val()) {
+          this.setState({
+            readonly: true
+          });
+        }
       });
     }
 
@@ -44,11 +49,11 @@ export default class Post extends Component {
     }
 
     render() {
+
       if (this.state.readonly) {
         return <div>
-                 <p>{this.state.value}</p>
                  <button onClick={this.handleEdit}>Edit</button>
-                 <p>id{this.props.id}</p>
+                 <p>{this.state.value}</p>
                  <Post id={this.props.id + 1} />
                </div>
       } else {
