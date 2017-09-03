@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 
 export default class Post extends Component {
-  constructor(props) {
+
+
+    constructor(props) {
       super(props);
       this.state = {value: '',
                     readonly: false};
@@ -11,12 +14,27 @@ export default class Post extends Component {
       this.handleEdit = this.handleEdit.bind(this);
     }
 
+    componentDidMount() {
+      const rootReference = firebase.database().ref();
+      const valueRef = rootReference.child('values/' + this.props.id + '/value');
+      valueRef.once('value').then(snapshot => {
+        this.setState({
+          value: snapshot.val()
+        });
+      });
+    }
+
     handleChange(event) {
       this.setState({value: event.target.value});
     }
 
     handleSubmit(event) {
       this.setState({readonly: true});
+      var database = firebase.database();
+      firebase.database().ref('values/' + this.props.id).set({
+        value: this.state.value
+      });
+      // Get a reference to the database service
       event.preventDefault();
     }
 
