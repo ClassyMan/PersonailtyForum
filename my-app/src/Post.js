@@ -4,22 +4,15 @@ export default class Post extends Component {
   constructor(props) {
       super(props);
       this.state = {value: '',
-                    readonly: false,
-                    data: ""};
+                    readonly: false};
 
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleEdit = this.handleEdit.bind(this);
-      this.handleComponentUpdate = this.handleComponentUpdate.bind(this);
-    }
-
-    handleComponentUpdate(event) {
-      this.setState({data: event.target.value});
     }
 
     handleChange(event) {
       this.setState({value: event.target.value});
-      this.props.handleUpdate(this.state.value);
     }
 
     handleSubmit(event) {
@@ -37,15 +30,15 @@ export default class Post extends Component {
         return <div>
                  <p>{this.state.value}</p>
                  <button onClick={this.handleEdit}>Edit</button>
-                 <p>id{this.props.id}, status{this.state.data}</p>
-                 <Post id={this.props.id + 1} handleUpdate={this.handleComponentUpdate}/>
+                 <p>id{this.props.id}</p>
+                 <Post id={this.props.id + 1} />
                </div>
       } else {
         return (
           <form onSubmit={this.handleSubmit}>
           <label>
-          Coffee order : 
-          <input type="text" value={this.state.value} handleUpdate={this.handleComponentUpdate} onChange={this.handleChange}/>
+          Coffee order :
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
           </label>
           <input type="submit" value="Submit" />
           </form>
