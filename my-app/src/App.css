@@ -22,6 +22,7 @@ P {
   display: inline-block;
   margin: 0;
   text-align: left;
+  padding-left: 1em;
 }
 
 @keyframes App-logo-spin {

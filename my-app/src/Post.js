@@ -18,11 +18,11 @@ export default class Post extends Component {
       const rootReference = firebase.database().ref();
       const valueRef = rootReference.child('values/' + this.props.id + '/value');
       valueRef.once('value').then(snapshot => {
-        this.setState({
-          value: snapshot.val()
-        });
-        if (snapshot.val()) {
+        var savedString = snapshot.val();
+        if (savedString) {
+          savedString = savedString.charAt(0).toUpperCase() + savedString.slice(1);
           this.setState({
+            value: savedString,
             readonly: true
           });
         }
