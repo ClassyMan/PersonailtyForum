@@ -13,6 +13,8 @@ export default class Post extends Component {
     super(props);
     this.state = {description: '',
                   readonly: false};
+
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -26,11 +28,16 @@ export default class Post extends Component {
     orderRef.once('value').then(snapshot => {
       if (snapshot.val()) {
           this.setState({
+            name: format(snapshot.val().name),
             description: format(snapshot.val().description),
             readonly: true
           });
       }
     });
+  }
+
+  handleNameChange(event) {
+    this.setState({name: event.target.value});
   }
 
   // handle update to the value attribute
@@ -44,6 +51,7 @@ export default class Post extends Component {
     // Save the Post to the database
     var database = firebase.database();
     firebase.database().ref('values/' + this.props.id).set({
+      name: this.state.name,
       description: this.state.description
     });
     // Get a reference to the database service
@@ -67,18 +75,20 @@ export default class Post extends Component {
     if (this.state.readonly) {
       return <div>
                <button onClick={this.handleEdit}>Edit</button>
-               <p>{this.state.description}</p>
-               <Post id={this.props.id + 1} />
+               <p>Name: {this.state.name}</p>
+               <p> : {this.state.description}</p>
+               <Post  id={this.props.id + 1} />
              </div>
     } else {
       return (
         <form onSubmit={this.handleSubmit}>
-        <label>
-        Coffee order :
-        <input type="text" value={this.state.description} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-        </form>
+          <label>
+            Coffee order :
+            <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+            <input type="text" value={this.state.description} onChange={this.handleChange} />
+          </label>
+            <input type="submit" value="Submit" />
+          </form>
       );
     }
   }
