@@ -11,11 +11,10 @@ export default class Post extends Component {
   // pass in props, set initial state and bind our methods to this instance
   constructor(props) {
     super(props);
-    this.state = {description: '',
-                  readonly: false};
+    this.state = {description: '', readonly: false};
 
     this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
   }
@@ -40,8 +39,7 @@ export default class Post extends Component {
     this.setState({name: event.target.value});
   }
 
-  // handle update to the value attribute
-  handleChange(event) {
+  handleDescriptionChange(event) {
     this.setState({description: event.target.value});
   }
 
@@ -75,20 +73,19 @@ export default class Post extends Component {
     if (this.state.readonly) {
       return <div>
                <button onClick={this.handleEdit}>Edit</button>
-               <p>Name: {this.state.name}</p>
-               <p> : {this.state.description}</p>
+               <p>{this.state.name} - {this.state.description}</p>
                <Post  id={this.props.id + 1} />
              </div>
     } else {
       return (
         <form onSubmit={this.handleSubmit}>
           <label>
-            Coffee order :
+            <p>Coffee order :</p>
             <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-            <input type="text" value={this.state.description} onChange={this.handleChange} />
+            <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
           </label>
-            <input type="submit" value="Submit" />
-          </form>
+          <input type="submit" value="Submit" />
+        </form>
       );
     }
   }
