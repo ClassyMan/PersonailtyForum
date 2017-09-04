@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+var format = require('../src/Formatter.js');
 
 export default class Post extends Component {
 
