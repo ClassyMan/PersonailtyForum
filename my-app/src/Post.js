@@ -3,7 +3,6 @@ import * as firebase from 'firebase';
 
 export default class Post extends Component {
 
-
     constructor(props) {
       super(props);
       this.state = {value: '',
@@ -14,17 +13,21 @@ export default class Post extends Component {
       this.handleEdit = this.handleEdit.bind(this);
     }
 
+    // Just after load is where we want to load the data so the actual
+    // screen loads first
     componentDidMount() {
-      const rootReference = firebase.database().ref();
-      const valueRef = rootReference.child('values/' + this.props.id + '/value');
+      const rootReference = firebase.database().ref(); // Get a reference to the root of the database
+      const valueRef = rootReference.child('values/' + this.props.id); // Get the values 'table'
       valueRef.once('value').then(snapshot => {
-        var savedString = snapshot.val();
-        if (savedString) {
-          savedString = savedString.charAt(0).toUpperCase() + savedString.slice(1);
-          this.setState({
-            value: savedString,
-            readonly: true
-          });
+        if (snapshot.val()) {
+          var savedString = snapshot.val().value;
+          if (savedString) {
+            savedString = savedString.charAt(0).toUpperCase() + savedString.slice(1);
+            this.setState({
+              value: savedString,
+              readonly: true
+            });
+          }
         }
       });
     }
