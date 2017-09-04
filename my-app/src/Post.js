@@ -11,7 +11,7 @@ export default class Post extends Component {
   // pass in props, set initial state and bind our methods to this instance
   constructor(props) {
     super(props);
-    this.state = {value: '',
+    this.state = {description: '',
                   readonly: false};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,11 +22,11 @@ export default class Post extends Component {
   // screen loads first
   componentDidMount() {
     const rootReference = firebase.database().ref(); // Get a reference to the root of the database
-    const valueRef = rootReference.child('values/' + this.props.id); // Get the values 'table'
-    valueRef.once('value').then(snapshot => {
+    const orderRef = rootReference.child('values/' + this.props.id); // Get the values 'table'
+    orderRef.once('value').then(snapshot => {
       if (snapshot.val()) {
           this.setState({
-            value: format(snapshot.val().value),
+            description: format(snapshot.val().description),
             readonly: true
           });
       }
@@ -35,7 +35,7 @@ export default class Post extends Component {
 
   // handle update to the value attribute
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({description: event.target.value});
   }
 
   // handle clicking of the submit button
@@ -44,7 +44,7 @@ export default class Post extends Component {
     // Save the Post to the database
     var database = firebase.database();
     firebase.database().ref('values/' + this.props.id).set({
-      value: this.state.value
+      description: this.state.description
     });
     // Get a reference to the database service
     event.preventDefault();
@@ -67,7 +67,7 @@ export default class Post extends Component {
     if (this.state.readonly) {
       return <div>
                <button onClick={this.handleEdit}>Edit</button>
-               <p>{this.state.value}</p>
+               <p>{this.state.description}</p>
                <Post id={this.props.id + 1} />
              </div>
     } else {
@@ -75,7 +75,7 @@ export default class Post extends Component {
         <form onSubmit={this.handleSubmit}>
         <label>
         Coffee order :
-        <input type="text" value={this.state.value} onChange={this.handleChange} />
+        <input type="text" value={this.state.description} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
         </form>
