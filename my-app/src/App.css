@@ -22,6 +22,38 @@
   font-size: large;
 }
 
+.Order-entry {
+  text-align: left;
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.Submit-order {
+  shape-margin: 1em;
+}
+
+label {
+  display: inline-block;
+  float: left;
+  clear: left;
+  width: 10em;
+  text-align: left;
+}
+
+input {
+  display: inline-block;
+  float: right;
+}
+
+.Delete {
+  background:url(./delete.png) no-repeat;
+  cursor:pointer;
+  border:none;
+  width:15px;
+  height:15px;
+}
+
 P {
   display: inline-block;
   margin: 0;

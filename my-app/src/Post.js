@@ -17,6 +17,7 @@ export default class Post extends Component {
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   // Just after load is where we want to load the data so the actual
@@ -62,6 +63,13 @@ export default class Post extends Component {
     event.preventDefault();
   }
 
+  handleDelete(event) {
+    var database = firebase.database();
+    // Delete the record
+    firebase.database().ref('values/' + this.props.id).remove();
+    event.preventDefault();
+  }
+
   /*
      Render our Post component.
      If the post is saved it should be displayed in readonly module and should
@@ -74,17 +82,20 @@ export default class Post extends Component {
       return <div>
                <button onClick={this.handleEdit}>Edit</button>
                <p>{this.state.name} - {this.state.description}</p>
-               <Post  id={this.props.id + 1} />
+               <button className='Delete' onClick={this.handleDelete} />
+               <Post id={this.props.id + 1} />
              </div>
     } else {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <p>Coffee order :</p>
-            <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-            <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
-          </label>
-          <input type="submit" value="Submit" />
+        <form className='Order-entry' onSubmit={this.handleSubmit}>
+            <h2>Coffee order :</h2>
+            <br></br>
+            <label>Name: </label><input type="text" value={this.state.name} onChange={this.handleNameChange} />
+            <br></br>
+            <label>Items requested: </label><input type="text" value={this.state.description} onChange={this.handleDescriptionChange} />
+            <br></br>
+            <br></br>
+          <input className='Submit-order' type="submit" value="Submit" />
         </form>
       );
     }
